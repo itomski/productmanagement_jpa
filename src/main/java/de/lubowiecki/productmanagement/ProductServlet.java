@@ -22,8 +22,6 @@ public class ProductServlet extends HttpServlet {
         System.out.println(p.getId());
          */
 
-
-
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
