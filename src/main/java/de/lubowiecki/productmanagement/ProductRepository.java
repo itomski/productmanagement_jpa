@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProductRepository {
@@ -41,5 +42,20 @@ public class ProductRepository {
             return Optional.of(product);
         }
         return Optional.empty();
+    }
+
+    public List<Product> find() {
+        EntityManager em = getEntityManager();
+        // JPQL = Java Persistance Query Language. Konzentriert sich auf Java-Klassen nicht auf Tabellen in der DB
+        List<Product> products = em.createQuery("SELECT p FROM Product p").getResultList();
+        return products;
+    }
+
+    public List<Product> find(String str) {
+        EntityManager em = getEntityManager();
+        List<Product> products = em.createQuery("SELECT p FROM Product p WHERE p.name LIKE ?1 OR p.description LIKE ?1")
+                .setParameter(1, "%" + str + "%")
+                .getResultList();
+        return products;
     }
 }

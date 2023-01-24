@@ -2,10 +2,7 @@ package de.lubowiecki.productmanagement;
 
 import java.io.*;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -14,24 +11,36 @@ public class ProductServlet extends HttpServlet {
 
     private ProductRepository repository = new ProductRepository();
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        /*
-        Product p = new Product("Handschuhe", "100% Wolle", 19.99);
-        repository.save(p);
-        System.out.println(p.getId());
-         */
+    // Direkter aufruf der URL (/products) mit GET. Übersicht der Produkte
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
+        final String action = request.getParameter("a");
 
-        repository.find(100).ifPresent((p) ->  {
-            out.println("<h1>" + p.getName() + "</h1>");
-            out.println("<p>" + p.getDescription() + "</p>");
-            out.println("<p>Preis: " + p.getPrice() + " EUR</p>");
-        });
+        if(action != null && action.equals("form")) { // Formular
+            getServletContext().getRequestDispatcher("/WEB-INF/form.jsp").forward(request, response);
+        }
+        else { // Auflistung der Produkte
+            final String search = request.getParameter("s");
+            if(search != null) {
+                request.setAttribute("products", repository.find(search));
+            }
+            else {
+                request.setAttribute("products", repository.find());
+            }
+            getServletContext().getRequestDispatcher("/WEB-INF/list.jsp").forward(request, response);
+        }
+    }
 
-        out.println("</body></html>");
+    // Verarbeitung der Formulardaten (POST)
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        final String name = request.getParameter("name");
+        final String description = request.getParameter("description");
+        final double price = Double.parseDouble(request.getParameter("price"));
+
+        repository.save(new Product(name, description, price)); // Speichern
+
+        response.sendRedirect("products"); // Auf die Übersicht umleiten
     }
 }

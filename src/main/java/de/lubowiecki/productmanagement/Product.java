@@ -2,9 +2,11 @@ package de.lubowiecki.productmanagement;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "products") // Name der Tabelle
-public class Product { // POJO - gibt es keine @Table-Annotation, wird die Tabelle nach der Klasse benannt
+public class Product implements Serializable { // POJO - gibt es keine @Table-Annotation, wird die Tabelle nach der Klasse benannt
 
     @Id
     @GeneratedValue // ID soll automatisch vergeben werden

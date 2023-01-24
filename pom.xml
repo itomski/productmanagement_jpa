@@ -24,11 +24,13 @@
             <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- JPA: Eclipselink -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
             <version>3.0.2</version>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -42,10 +44,25 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Treiber für MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.32</version>
+        </dependency>
+
+        <!-- bootstrap CSS-Framework -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+
+        <!-- JSTL - Erweiterte Tags für JSP -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>2.0.0</version>
         </dependency>
 
     </dependencies>
