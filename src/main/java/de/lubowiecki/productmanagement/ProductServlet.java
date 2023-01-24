@@ -15,13 +15,16 @@ public class ProductServlet extends HttpServlet {
     // Direkter aufruf der URL (/products) mit GET. Übersicht der Produkte
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+        // Die aufgerufenen URL entscheiden darüber, was das Servlet macht
+
+        // Parameter aus der URL lesen
         final String action = request.getParameter("a");
 
         if(action != null && action.equals("form")) { // Formular
             getServletContext().getRequestDispatcher("/WEB-INF/form.jsp").forward(request, response);
         }
         else { // Auflistung der Produkte
-            final String search = request.getParameter("s");
+            final String search = request.getParameter("s"); // Einlesen von Suchparametern
             if(search != null) {
                 request.setAttribute("products", repository.find(search));
             }

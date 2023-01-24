@@ -53,9 +53,24 @@ public class ProductRepository {
 
     public List<Product> find(String str) {
         EntityManager em = getEntityManager();
+        // OR = Wert kann in name oder description vorkommen
+        // LIKE = Der Wert kann anders beginnen oder anders enden
+        // ?1 = Parameter, muss anschließend über setParameter zugewiesen werden
         List<Product> products = em.createQuery("SELECT p FROM Product p WHERE p.name LIKE ?1 OR p.description LIKE ?1")
-                .setParameter(1, "%" + str + "%")
+                .setParameter(1, "%" + str + "%") // % = Beliebige Zeichen
                 .getResultList();
         return products;
+    }
+
+    public void delete(long id) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        Product product = em.find(Product.class, id);
+        em.remove(product);
+        em.getTransaction().commit();
+    }
+
+    public void delete(Product product) {
+        delete(product.getId());
     }
 }
